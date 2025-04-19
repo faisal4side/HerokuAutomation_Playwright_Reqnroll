@@ -5,6 +5,26 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+      browser:
+        description: 'Browser to run tests in'
+        required: true
+        default: 'chromium'
+        type: choice
+        options:
+        - chromium
+        - firefox
+        - webkit
+        - all
 
 jobs:
   test:
@@ -37,7 +57,7 @@ jobs:
 
     - name: Run Tests
       run: |
-        dotnet test --configuration Release --collect:"XPlat Code Coverage" --logger "trx;LogFileName=TestResults.trx" --logger "html;LogFileName=TestResults.html"
+        dotnet test --configuration Release --collect:"XPlat Code Coverage" --logger "trx;LogFileName=TestResults.trx" --logger "html;LogFileName=TestResults.html" --filter "Browser=${{ github.event.inputs.browser }}"
 
     - name: Generate Coverage Report
       run: |
