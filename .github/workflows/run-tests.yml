@@ -54,12 +54,23 @@ jobs:
 
     - name: Run Tests
       run: |
-        dotnet test --configuration Release --filter "Browser=${{ github.event.inputs.browser }}"
+        dotnet test --configuration Release --logger "console;verbosity=detailed" --logger "trx;LogFileName=TestResults.trx"
+
+    - name: Check if test results exist
+      id: check_results
+      run: |
+        if (Test-Path "TestResults/TestResults.trx") {
+          echo "exists=true" >> $env:GITHUB_OUTPUT
+        } else {
+          echo "exists=false" >> $env:GITHUB_OUTPUT
+        }
 
     - name: Install ReportGenerator
+      if: steps.check_results.outputs.exists == 'true'
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: Generate Coverage Report
+      if: steps.check_results.outputs.exists == 'true'
       run: |
         reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
 
