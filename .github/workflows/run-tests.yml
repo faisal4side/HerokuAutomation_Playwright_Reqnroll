@@ -24,67 +24,58 @@ on:
         - chromium
         - firefox
         - webkit
-        - all
-
-permissions:
-  contents: read
-  packages: read
-  actions: read
 
 jobs:
   test:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3.5.3
+    - uses: actions/checkout@v3
 
-    - name: Install Playwright CLI
-      run: dotnet tool install --global Microsoft.Playwright.CLI
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Install Playwright
+      run: dotnet build
+      env:
+        PLAYWRIGHT_BROWSERS_PATH: 0
 
     - name: Install Playwright Browsers
-      run: |
-        dotnet build
-        playwright install
-
-    - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet tool install --global Microsoft.Playwright.CLI && playwright install
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
-    - name: Run Tests
+    - name: Run Tests with Coverage
       run: |
-        dotnet test --configuration Release --logger "console;verbosity=detailed" --logger "trx;LogFileName=TestResults.trx"
-
-    - name: Check if test results exist
-      id: check_results
-      run: |
-        if (Test-Path "TestResults/TestResults.trx") {
-          echo "exists=true" >> $env:GITHUB_OUTPUT
+        dotnet test --configuration Release --collect:"XPlat Code Coverage" --logger "console;verbosity=detailed" --logger "trx;LogFileName=TestResults.trx"
+        $coverageFile = Get-ChildItem -Path "**/coverage.cobertura.xml" -Recurse | Select-Object -First 1
+        if ($coverageFile) {
+          Write-Host "Found coverage file at: $($coverageFile.FullName)"
+          $coverageFile | Copy-Item -Destination "coverage.cobertura.xml" -Force
         } else {
-          echo "exists=false" >> $env:GITHUB_OUTPUT
+          Write-Host "No coverage file found"
         }
 
     - name: Install ReportGenerator
-      if: steps.check_results.outputs.exists == 'true'
+      if: success()
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: Generate Coverage Report
-      if: steps.check_results.outputs.exists == 'true'
-      run: |
-        reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
+      if: success()
+      run: reportgenerator -reports:"coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
 
     - name: Upload Test Results
+      if: always()
       uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
       with:
         name: test-results
-        path: TestResults
-
-    - name: Upload Coverage Report
-      uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
-      with:
-        name: coverage-report
-        path: CoverageReport
+        path: |
+          TestResults/TestResults.trx
+          CoverageReport/
+        retention-days: 5
 
     - name: Upload Screenshots
       uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
