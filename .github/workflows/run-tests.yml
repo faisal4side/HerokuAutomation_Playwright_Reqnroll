@@ -52,12 +52,12 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
     - name: Run Tests
       run: |
-        dotnet test --configuration Release --collect:"XPlat Code Coverage" --logger "trx;LogFileName=TestResults.trx" --logger "html;LogFileName=TestResults.html" --filter "Browser=${{ github.event.inputs.browser }}"
+        dotnet test --configuration Release --filter "Browser=${{ github.event.inputs.browser }}"
+
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: Generate Coverage Report
       run: |
