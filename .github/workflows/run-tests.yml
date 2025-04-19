@@ -26,15 +26,20 @@ on:
         - webkit
         - all
 
+permissions:
+  contents: read
+  packages: read
+  actions: read
+
 jobs:
   test:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+    - uses: actions/checkout@v3.5.3
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@4d6c8fcf3c8f7a60068d26b594648e99df01b9fe
+      uses: actions/setup-dotnet@v3.3.0
       with:
         dotnet-version: '8.0.x'
 
@@ -64,31 +69,31 @@ jobs:
         reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"HtmlInline_AzurePipelines;Cobertura"
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: test-results
         path: TestResults
 
     - name: Upload Coverage Report
-      uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: coverage-report
         path: CoverageReport
 
     - name: Upload Screenshots
-      uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: screenshots
         path: screenshots
 
     - name: Upload Videos
-      uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: videos
         path: videos
 
     - name: Upload Logs
-      uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: logs
         path: logs 
