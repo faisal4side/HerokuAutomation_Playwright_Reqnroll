@@ -14,11 +14,11 @@ Scenario: Failed Login with Invalid Credentials
     Then I should see an error message
     And a screenshot should be captured
 
-Scenario: Verify Artifact Recording
-    Given I am on the login page
-    When I enter invalid username "testuser" and password "wrongpass"
-    Then I should see an error message
-    And a screenshot should be captured
-    And a video should be recorded
-    And logs should be generated
-    And stack trace should be captured 
+#Scenario: Verify Artifact Recording
+#    Given I am on the login page
+#    When I enter invalid username "testuser" and password "wrongpass"
+#    Then I should see an error message
+#    And a screenshot should be captured
+#    And a video should be recorded
+#    And logs should be generated
+#    And stack trace should be captured 

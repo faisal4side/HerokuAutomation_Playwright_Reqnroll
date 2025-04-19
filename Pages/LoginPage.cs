@@ -82,10 +82,10 @@ namespace HerokuAutomation_Playwright_Reqnroll.Pages
                 }
 
                 var message = await element.TextContentAsync();
-                TestLogger.LogInfo($"Flash message content: {message}");
+                TestLogger.LogInfo($"Raw flash message content: {message}");
                 
                 // Clean up the message (remove the '×' character and trim)
-                message = message.Replace("×", "").Trim();
+                message = message?.Replace("×", "").Trim() ?? string.Empty;
                 TestLogger.LogInfo($"Cleaned flash message: {message}");
                 
                 return message;

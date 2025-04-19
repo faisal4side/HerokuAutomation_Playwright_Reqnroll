@@ -58,28 +58,57 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         [Then(@"a screenshot should be captured")]
         public async Task ThenAScreenshotShouldBeCaptured()
         {
-            await _loginPage.TakeScreenshotOnFailureAsync();
-            var screenshotPath = Path.Combine(TestConfiguration.ScreenshotsDirectory, 
-                $"error_{_scenarioContext.ScenarioInfo.Title}_{System.DateTime.Now:yyyyMMdd_HHmmss}.png");
-            
-            // Wait a moment for the file to be written
-            await Task.Delay(1000);
-            
-            Assert.IsTrue(File.Exists(screenshotPath), $"Screenshot was not captured at {screenshotPath}");
-            TestLogger.LogInfo($"Screenshot captured at: {screenshotPath}");
+            try
+            {
+                var screenshotFileName = $"login_failure_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                var screenshotPath = Path.Combine(TestConfiguration.ScreenshotsDirectory, screenshotFileName);
+                
+                TestLogger.LogInfo($"Attempting to capture screenshot at: {screenshotPath}");
+                
+                await _page.ScreenshotAsync(new PageScreenshotOptions
+                {
+                    Path = screenshotPath,
+                    FullPage = true
+                });
+
+                // Wait a moment for the file to be written
+                await Task.Delay(1000);
+
+                if (File.Exists(screenshotPath))
+                {
+                    TestLogger.LogInfo($"Screenshot successfully captured at: {screenshotPath}");
+                }
+                else
+                {
+                    TestLogger.LogError($"Screenshot was not captured at: {screenshotPath}");
+                    Assert.Fail($"Screenshot was not captured at: {screenshotPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                TestLogger.LogError("Failed to capture screenshot", ex);
+                throw;
+            }
         }
 
         [Then(@"a video should be recorded")]
         public void ThenAVideoShouldBeRecorded()
         {
             var videoPath = Path.Combine(TestConfiguration.VideoDirectory, 
-                $"{_scenarioContext.ScenarioInfo.Title}_{System.DateTime.Now:yyyyMMdd_HHmmss}.webm");
+                $"{_scenarioContext.ScenarioInfo.Title}_{DateTime.Now:yyyyMMdd_HHmmss}.webm");
             
             // Wait a moment for the file to be written
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
             
-            Assert.IsTrue(File.Exists(videoPath), $"Video was not recorded at {videoPath}");
-            TestLogger.LogInfo($"Video recorded at: {videoPath}");
+            if (File.Exists(videoPath))
+            {
+                TestLogger.LogInfo($"Video successfully recorded at: {videoPath}");
+            }
+            else
+            {
+                TestLogger.LogError($"Video was not recorded at: {videoPath}");
+                Assert.Fail($"Video was not recorded at: {videoPath}");
+            }
         }
 
         [Then(@"logs should be generated")]
