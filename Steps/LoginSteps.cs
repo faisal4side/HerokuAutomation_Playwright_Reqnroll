@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using System.IO;
 using HerokuAutomation_Playwright_Reqnroll.Utilities;
 using HerokuAutomation_Playwright_Reqnroll.Config;
+using NUnit.Framework;
+using System;
+using System.Threading;
 
 namespace HerokuAutomation_Playwright_Reqnroll.Steps
 {
@@ -13,7 +16,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly IPage _page;
-        private LoginPage _loginPage;
+        private readonly LoginPage _loginPage;
 
         public LoginSteps(ScenarioContext scenarioContext)
         {

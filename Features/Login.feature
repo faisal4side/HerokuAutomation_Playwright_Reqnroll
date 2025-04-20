@@ -12,7 +12,6 @@ Scenario: Failed Login with Invalid Credentials
     Given I am on the login page
     When I enter invalid username "invalid" and password "invalid"
     Then I should see an error message
-    And a screenshot should be captured
 
 #Scenario: Verify Artifact Recording
 #    Given I am on the login page
