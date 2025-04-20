@@ -40,4 +40,5 @@ jobs:
           TestResults
           Screenshots/**/*.png
           Videos/**/*.webm
-          Logs/**/*.txt 
+          Logs/**/*.txt
+          Reports/**/*.html 

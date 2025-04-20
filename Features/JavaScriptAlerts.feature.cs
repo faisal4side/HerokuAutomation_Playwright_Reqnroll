@@ -94,12 +94,18 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Handle JS Alert")]
+        [NUnit.Framework.CategoryAttribute("functional")]
+        [NUnit.Framework.CategoryAttribute("p1")]
+        [NUnit.Framework.CategoryAttribute("alert")]
         public async System.Threading.Tasks.Task HandleJSAlert()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "functional",
+                    "p1",
+                    "alert"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle JS Alert", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 9
+#line 10
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -112,13 +118,13 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
 #line 6
     await this.FeatureBackgroundAsync();
 #line hidden
-#line 10
+#line 11
         await testRunner.WhenAsync("I click on the JS Alert button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 12
         await testRunner.ThenAsync("I should see the alert message \"You successfully clicked an alert\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 12
+#line 13
         await testRunner.AndAsync("I should accept the alert", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -127,12 +133,18 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Handle JS Confirm")]
+        [NUnit.Framework.CategoryAttribute("functional")]
+        [NUnit.Framework.CategoryAttribute("p1")]
+        [NUnit.Framework.CategoryAttribute("confirm")]
         public async System.Threading.Tasks.Task HandleJSConfirm()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "functional",
+                    "p1",
+                    "confirm"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle JS Confirm", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 14
+#line 16
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -145,13 +157,13 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
 #line 6
     await this.FeatureBackgroundAsync();
 #line hidden
-#line 15
+#line 17
         await testRunner.WhenAsync("I click on the JS Confirm button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 16
+#line 18
         await testRunner.ThenAsync("I should see the alert message \"You clicked: Ok\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 17
+#line 19
         await testRunner.AndAsync("I should accept the confirm", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -160,12 +172,18 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Handle JS Prompt")]
+        [NUnit.Framework.CategoryAttribute("functional")]
+        [NUnit.Framework.CategoryAttribute("p1")]
+        [NUnit.Framework.CategoryAttribute("confirm")]
         public async System.Threading.Tasks.Task HandleJSPrompt()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "functional",
+                    "p1",
+                    "confirm"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle JS Prompt", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 19
+#line 22
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -178,16 +196,16 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
 #line 6
     await this.FeatureBackgroundAsync();
 #line hidden
-#line 20
+#line 23
         await testRunner.WhenAsync("I click on the JS Prompt button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 24
         await testRunner.ThenAsync("I should see the alert message \"Test Message\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 22
+#line 25
         await testRunner.AndAsync("I should accept the prompt", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 26
         await testRunner.AndAsync("I should see the result containing \"You entered: Test Message\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }

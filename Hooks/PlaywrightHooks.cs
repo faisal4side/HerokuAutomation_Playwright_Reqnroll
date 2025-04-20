@@ -3,102 +3,51 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Allure.Net.Commons;
 using HerokuAutomation_Playwright_Reqnroll.Config;
-using HerokuAutomation_Playwright_Reqnroll.Utilities;
+using NUnit.Allure.Core;
+using NUnit.Allure.Attributes;
 using Reqnroll;
+using System.Collections.Generic;
+
+[assembly: Parallelizable(ParallelScope.Fixtures)]
 
 namespace HerokuAutomation_Playwright_Reqnroll.Hooks
 {
-    [Binding]
-    public class PlaywrightHooks
+    [SetUpFixture]
+    [AllureNUnit]
+    public class GlobalHooks
     {
-        private readonly ScenarioContext _scenarioContext;
+        [OneTimeSetUp]
+        public void GlobalSetup()
+        {
+            AllureLifecycle.Instance.CleanupResultDirectory();
+            Environment.SetEnvironmentVariable("ALLURE_CONFIG_FILE", "allureConfig.json");
+        }
+
+        [OneTimeTearDown]
+        public void GlobalTeardown()
+        {
+            // Allure results are automatically generated
+        }
+    }
+
+    [Binding]
+    public class PlaywrightFixture
+    {
         private IPlaywright _playwright;
         private IBrowser _browser;
-        private IPage _page;
+        private IBrowserContext _context;
+        protected IPage _page;
+        private readonly ScenarioContext _scenarioContext;
+        private string _currentTestUuid;
 
-        public PlaywrightHooks(ScenarioContext scenarioContext)
+        public PlaywrightFixture(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
 
         [BeforeScenario]
-        public async Task BeforeScenario()
-        {
-            try
-            {
-                // Initialize Playwright
-                _playwright = await Microsoft.Playwright.Playwright.CreateAsync();
-                
-                // Launch browser
-                _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
-                {
-                    Headless = false,
-                    SlowMo = 50
-                });
-                
-                // Create a new page
-                _page = await _browser.NewPageAsync();
-
-                // Store page in scenario context
-                _scenarioContext.Set(_page, "page");
-            }
-            catch (Exception ex)
-            {
-                TestLogger.LogError("Failed to initialize Playwright", ex);
-                throw;
-            }
-        }
-
-        [AfterScenario]
-        public async Task AfterScenario()
-        {
-            try
-            {
-                // Capture screenshot on failure
-                if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
-                {
-                    var screenshotPath = Path.Combine(TestConfiguration.ScreenshotsDirectory, 
-                        $"error_{TestContext.CurrentContext.Test.Name}_{DateTime.Now:yyyyMMdd_HHmmss}.png");
-                    
-                    await _page.ScreenshotAsync(new PageScreenshotOptions
-                    {
-                        Path = screenshotPath,
-                        FullPage = true
-                    });
-                    TestLogger.LogInfo($"Screenshot captured: {screenshotPath}");
-                }
-
-                // Clean up resources
-                if (_page != null)
-                {
-                    await _page.CloseAsync();
-                }
-                
-                if (_browser != null)
-                {
-                    await _browser.CloseAsync();
-                }
-                
-                _playwright?.Dispose();
-            }
-            catch (Exception ex)
-            {
-                TestLogger.LogError("Failed to clean up Playwright resources", ex);
-                throw;
-            }
-        }
-    }
-
-    [SetUpFixture]
-    public class GlobalHooks
-    {
-        private IPlaywright _playwright;
-        private IBrowser _browser;
-        private IBrowserContext _context;
-        private IPage _page;
-
-        [OneTimeSetUp]
         public async Task Setup()
         {
             _playwright = await Playwright.CreateAsync();
@@ -106,57 +55,105 @@ namespace HerokuAutomation_Playwright_Reqnroll.Hooks
             {
                 Headless = false
             });
-            _context = await _browser.NewContextAsync();
-            _page = await _context.NewPageAsync();
 
-            // Store the page in ScenarioContext with the correct key
-            ScenarioContext.Current.Set(_page, "page");
+            _context = await _browser.NewContextAsync(new BrowserNewContextOptions
+            {
+                ViewportSize = new ViewportSize { Width = 1920, Height = 1080 }
+            });
+
+            _page = await _context.NewPageAsync();
+            _scenarioContext.Set(_page, "page");
+
+            // Initialize Allure test case
+            _currentTestUuid = Guid.NewGuid().ToString();
+            var scenarioName = _scenarioContext.ScenarioInfo.Title;
+            
+            var testResult = new TestResult
+            {
+                uuid = _currentTestUuid,
+                name = scenarioName,
+                parameters = new List<Parameter>
+                {
+                    new Parameter { name = "Start Time", value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") },
+                    new Parameter { name = "Browser", value = "Chromium" },
+                    new Parameter { name = "Browser Version", value = _browser.Version },
+                    new Parameter { name = "Viewport", value = "1920x1080" }
+                }
+            };
+            
+            AllureLifecycle.Instance.StartTestCase(testResult);
         }
 
-        [OneTimeTearDown]
+        [AfterScenario]
         public async Task Teardown()
         {
-            if (_page != null)
+            try
             {
-                await _page.CloseAsync();
+                if (_scenarioContext.TestError != null)
+                {
+                    var screenshotPath = Path.Combine(
+                        TestConfiguration.ScreenshotsDirectory,
+                        $"failure_{DateTime.Now:yyyyMMdd_HHmmss}.png"
+                    );
+
+                    await _page.ScreenshotAsync(new PageScreenshotOptions
+                    {
+                        Path = screenshotPath,
+                        FullPage = true
+                    });
+
+                    // Attach screenshot to Allure report
+                    AllureLifecycle.Instance.AddAttachment(
+                        "Screenshot",
+                        "image/png",
+                        File.ReadAllBytes(screenshotPath)
+                    );
+                    
+                    // Update test case with error information
+                    AllureLifecycle.Instance.UpdateTestCase(_currentTestUuid, tc =>
+                    {
+                        tc.status = Status.failed;
+                        tc.statusDetails = new StatusDetails
+                        {
+                            message = _scenarioContext.TestError.Message,
+                            trace = _scenarioContext.TestError.StackTrace
+                        };
+                        tc.parameters.Add(new Parameter { name = "End Time", value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
+                    });
+                }
+                else
+                {
+                    // Update test case for successful scenario
+                    AllureLifecycle.Instance.UpdateTestCase(_currentTestUuid, tc =>
+                    {
+                        tc.status = Status.passed;
+                        tc.parameters.Add(new Parameter { name = "End Time", value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
+                    });
+                }
             }
-            if (_context != null)
+            catch (Exception ex)
             {
-                await _context.CloseAsync();
+                Console.WriteLine($"Error during teardown: {ex.Message}");
+                AllureLifecycle.Instance.UpdateTestCase(_currentTestUuid, tc =>
+                {
+                    tc.status = Status.broken;
+                    tc.statusDetails = new StatusDetails
+                    {
+                        message = $"Teardown Error: {ex.Message}",
+                        trace = ex.StackTrace
+                    };
+                });
             }
-            if (_browser != null)
+            finally
             {
-                await _browser.CloseAsync();
-            }
-            if (_playwright != null)
-            {
-                _playwright.Dispose();
+                // Stop the test case
+                AllureLifecycle.Instance.StopTestCase(_currentTestUuid);
+                AllureLifecycle.Instance.WriteTestCase(_currentTestUuid);
+
+                await _context?.CloseAsync();
+                await _browser?.CloseAsync();
+                _playwright?.Dispose();
             }
         }
     }
-
-    public class PlaywrightFixture
-    {
-        protected IPage Page { get; private set; }
-
-        [SetUp]
-        public void Setup()
-        {
-            Page = ScenarioContext.Current.Get<IPage>("page");
-        }
-
-        [TearDown]
-        public async Task TearDown()
-        {
-            if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
-            {
-                var screenshotPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "screenshots");
-                Directory.CreateDirectory(screenshotPath);
-                var fileName = $"{TestContext.CurrentContext.Test.Name}_{DateTime.Now:yyyyMMdd_HHmmss}.png";
-                var fullPath = Path.Combine(screenshotPath, fileName);
-                await Page.ScreenshotAsync(new PageScreenshotOptions { Path = fullPath });
-                TestContext.AddTestAttachment(fullPath);
-            }
-        }
-    }
-} 
+}

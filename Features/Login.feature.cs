@@ -94,12 +94,18 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successful Login with Valid Credentials")]
+        [NUnit.Framework.CategoryAttribute("functional")]
+        [NUnit.Framework.CategoryAttribute("p1")]
+        [NUnit.Framework.CategoryAttribute("login")]
         public async System.Threading.Tasks.Task SuccessfulLoginWithValidCredentials()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "functional",
+                    "p1",
+                    "login"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successful Login with Valid Credentials", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 9
+#line 10
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -112,10 +118,10 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
 #line 6
     await this.FeatureBackgroundAsync();
 #line hidden
-#line 10
+#line 11
         await testRunner.WhenAsync("I enter valid username \"tomsmith\" and password \"SuperSecretPassword!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 12
         await testRunner.ThenAsync("I should be logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -124,12 +130,18 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Failed Login with Invalid Credentials")]
+        [NUnit.Framework.CategoryAttribute("functional")]
+        [NUnit.Framework.CategoryAttribute("p1")]
+        [NUnit.Framework.CategoryAttribute("login")]
         public async System.Threading.Tasks.Task FailedLoginWithInvalidCredentials()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "functional",
+                    "p1",
+                    "login"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Failed Login with Invalid Credentials", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 13
+#line 15
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -142,10 +154,10 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
 #line 6
     await this.FeatureBackgroundAsync();
 #line hidden
-#line 14
+#line 16
         await testRunner.WhenAsync("I enter invalid username \"invalid\" and password \"invalid\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 15
+#line 17
         await testRunner.ThenAsync("I should see an error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

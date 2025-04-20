@@ -6,10 +6,12 @@ Feature: Login Automation
     Background:
         Given I am on the login page
 
+        @functional @p1 @login
     Scenario: Successful Login with Valid Credentials
         When I enter valid username "tomsmith" and password "SuperSecretPassword!"
         Then I should be logged in successfully
 
+        @functional @p1 @login
     Scenario: Failed Login with Invalid Credentials
         When I enter invalid username "invalid" and password "invalid"
         Then I should see an error message

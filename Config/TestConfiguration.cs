@@ -1,19 +1,21 @@
 using System.IO;
+using System.Reflection;
 
 namespace HerokuAutomation_Playwright_Reqnroll.Config
 {
     public static class TestConfiguration
     {
-        private static readonly string ProjectRoot = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+        private static readonly string OutputDirectory = AppDomain.CurrentDomain.BaseDirectory;
         
         public static string BaseUrl => "https://the-internet.herokuapp.com";
         public static int DefaultTimeout => 5000; // 5 seconds
         
         // Artifact directories
-        public static string ScreenshotsDirectory => Path.Combine(ProjectRoot, "Screenshots");
-        public static string VideoDirectory => Path.Combine(ProjectRoot, "Videos");
-        public static string LogsDirectory => Path.Combine(ProjectRoot, "Logs");
-        public static string TestDataDirectory => Path.Combine(ProjectRoot, "TestData");
+        public static string ScreenshotsDirectory => Path.Combine(OutputDirectory, "Screenshots");
+        public static string VideoDirectory => Path.Combine(OutputDirectory, "Videos");
+        public static string LogsDirectory => Path.Combine(OutputDirectory, "Logs");
+        public static string TestDataDirectory => Path.Combine(OutputDirectory, "TestData");
+        public static string ReportsDirectory => Path.Combine(OutputDirectory, "Reports");
 
         static TestConfiguration()
         {
@@ -22,6 +24,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Config
             Directory.CreateDirectory(VideoDirectory);
             Directory.CreateDirectory(LogsDirectory);
             Directory.CreateDirectory(TestDataDirectory);
+            Directory.CreateDirectory(ReportsDirectory);
         }
 
         // Video recording settings
@@ -42,6 +45,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Config
     public class BrowserRecordingOptions
     {
         public string Dir { get; set; }
+        public string Format => "webm";
         public VideoSize Size { get; set; }
     }
 

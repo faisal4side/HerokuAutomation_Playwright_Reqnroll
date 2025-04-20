@@ -94,9 +94,15 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Upload file and verify")]
+        [NUnit.Framework.CategoryAttribute("functional")]
+        [NUnit.Framework.CategoryAttribute("p1")]
+        [NUnit.Framework.CategoryAttribute("fileUpload")]
         public async System.Threading.Tasks.Task UploadFileAndVerify()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "functional",
+                    "p1",
+                    "fileUpload"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Upload file and verify", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 9
@@ -113,7 +119,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
     await this.FeatureBackgroundAsync();
 #line hidden
 #line 10
-        await testRunner.WhenAsync("I upload the file \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+        await testRunner.WhenAsync("I upload the file \"test.tx\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 11
         await testRunner.ThenAsync("I should see the uploaded file name \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");

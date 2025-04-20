@@ -9,11 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="HerokuAutomation_Playwright_Reqnroll\**" />
+    <EmbeddedResource Remove="HerokuAutomation_Playwright_Reqnroll\**" />
+    <None Remove="HerokuAutomation_Playwright_Reqnroll\**" />
+    <ReqnrollFeatureFiles Remove="HerokuAutomation_Playwright_Reqnroll\**" />
+    <ReqnrollObsoleteCodeBehindFiles Remove="HerokuAutomation_Playwright_Reqnroll\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="Microsoft.Playwright" Version="1.41.0" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.41.2" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="Allure.NUnit" Version="2.11.0" />
+    <PackageReference Include="Allure.Net.Commons" Version="2.11.0" />
     <PackageReference Include="Reqnroll.NUnit" Version="2.4.0" />
+    <PackageReference Include="ExtentReports" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,15 +33,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="allureConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="TestData\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Update="TestData\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

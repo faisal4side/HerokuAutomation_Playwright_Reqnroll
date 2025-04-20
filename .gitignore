@@ -366,6 +366,7 @@ FodyWeavers.xsd
 Screenshots/
 Videos/
 Logs/
+Reports/
 TestResults/
 
 # .NET

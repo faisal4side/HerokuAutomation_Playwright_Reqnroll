@@ -6,14 +6,17 @@ Feature: Table Handling Automation
 Background:
 	Given I am on the tables page
 
+	@functional @p1
 Scenario: Extract and print company names
 	When I extract all names from the table
 	Then I should see all names printed
 
+	@functional @p1
 Scenario: Verify specific name exists
 	When I extract data from the table
 	Then I should verify that "Jason Doe" exists in the table
 
+	@functional @p1
 Scenario: Extract and verify all table data
 	When I extract data from the table
 	Then I should see the complete table data printed
