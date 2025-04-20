@@ -42,9 +42,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestData\**\*.*">
+    <None Update="Artifacts\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Artifacts\Logs\" />
+    <Folder Include="Artifacts\Screenshots\" />
+    <Folder Include="Artifacts\Traces\" />
+    <Folder Include="Artifacts\Videos\" />
+  </ItemGroup>
+
+  <Target Name="CreateArtifactsDirectories" BeforeTargets="Build">
+    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Screenshots" />
+    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Videos" />
+    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Logs" />
+    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\TestData" />
+    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Reports" />
+  </Target>
 
 </Project>

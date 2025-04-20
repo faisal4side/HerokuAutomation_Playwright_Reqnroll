@@ -119,7 +119,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
     await this.FeatureBackgroundAsync();
 #line hidden
 #line 10
-        await testRunner.WhenAsync("I upload the file \"test.tx\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+        await testRunner.WhenAsync("I upload the file \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 11
         await testRunner.ThenAsync("I should see the uploaded file name \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");

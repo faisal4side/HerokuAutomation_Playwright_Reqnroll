@@ -5,26 +5,49 @@ namespace HerokuAutomation_Playwright_Reqnroll.Config
 {
     public static class TestConfiguration
     {
-        private static readonly string OutputDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        private static readonly string ProjectRoot = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", ".."));
+        public static readonly string ArtifactsRoot = Path.Combine(ProjectRoot, "Artifacts");
         
         public static string BaseUrl => "https://the-internet.herokuapp.com";
         public static int DefaultTimeout => 5000; // 5 seconds
         
         // Artifact directories
-        public static string ScreenshotsDirectory => Path.Combine(OutputDirectory, "Screenshots");
-        public static string VideoDirectory => Path.Combine(OutputDirectory, "Videos");
-        public static string LogsDirectory => Path.Combine(OutputDirectory, "Logs");
-        public static string TestDataDirectory => Path.Combine(OutputDirectory, "TestData");
-        public static string ReportsDirectory => Path.Combine(OutputDirectory, "Reports");
+        public static string ScreenshotsDirectory => Path.Combine(ArtifactsRoot, "Screenshots");
+        public static string VideoDirectory => Path.Combine(ArtifactsRoot, "Videos");
+        public static string LogsDirectory => Path.Combine(ArtifactsRoot, "Logs");
+        public static string TestDataDirectory => Path.Combine(ArtifactsRoot, "TestData");
+        public static string ReportsDirectory => Path.Combine(ArtifactsRoot, "Reports");
+        public static string TracesDirectory => Path.Combine(ArtifactsRoot, "Traces");
 
         static TestConfiguration()
         {
-            // Ensure directories exist
-            Directory.CreateDirectory(ScreenshotsDirectory);
-            Directory.CreateDirectory(VideoDirectory);
-            Directory.CreateDirectory(LogsDirectory);
-            Directory.CreateDirectory(TestDataDirectory);
-            Directory.CreateDirectory(ReportsDirectory);
+            try
+            {
+                // Ensure directories exist
+                if (!Directory.Exists(ScreenshotsDirectory))
+                    Directory.CreateDirectory(ScreenshotsDirectory);
+                if (!Directory.Exists(VideoDirectory))
+                    Directory.CreateDirectory(VideoDirectory);
+                if (!Directory.Exists(LogsDirectory))
+                    Directory.CreateDirectory(LogsDirectory);
+                if (!Directory.Exists(TestDataDirectory))
+                    Directory.CreateDirectory(TestDataDirectory);
+                if (!Directory.Exists(ReportsDirectory))
+                    Directory.CreateDirectory(ReportsDirectory);
+                if (!Directory.Exists(TracesDirectory))
+                    Directory.CreateDirectory(TracesDirectory);
+
+                Console.WriteLine($"Project root directory: {ProjectRoot}");
+                Console.WriteLine($"Artifacts root directory: {ArtifactsRoot}");
+                Console.WriteLine($"Screenshots directory: {ScreenshotsDirectory}");
+                Console.WriteLine($"Logs directory: {LogsDirectory}");
+                Console.WriteLine($"Traces directory: {TracesDirectory}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating artifact directories: {ex.Message}");
+                throw;
+            }
         }
 
         // Video recording settings

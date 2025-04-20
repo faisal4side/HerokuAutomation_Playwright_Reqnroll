@@ -1,77 +1,116 @@
-# Playwright Test Automation with NUnit
+# Heroku Automation with Playwright and Reqnroll
 
-This project demonstrates automated testing of web applications using Playwright with NUnit in C#. It includes examples of table handling, data verification, and other common web testing scenarios.
+This project demonstrates automated testing of the Heroku web application using Playwright for browser automation and Reqnroll for BDD-style test specifications.
 
 ## Features
 
-- Table data extraction and verification
-- Comprehensive test scenarios using NUnit
-- Page Object Model implementation
-- Screenshot and video capture on test failure
-- Detailed logging
-- GitHub Actions CI/CD integration
+- **Browser Automation**: Uses Playwright for reliable and fast browser automation
+- **BDD Testing**: Implements Behavior-Driven Development using Reqnroll
+- **Comprehensive Reporting**:
+  - Allure Reports for detailed test execution reports
+  - Screenshots on test failure
+  - Video recordings of test execution
+  - Browser traces for debugging
+  - Detailed logs for each test scenario
+- **CI/CD Integration**: GitHub Actions workflow for automated testing
+- **Modern Tech Stack**:
+  - .NET 8.0
+  - Playwright 1.41.2
+  - Reqnroll 2.4.0
+  - NUnit 3.14.0
+  - Allure Reports 2.11.0
+
+## Project Structure
+
+```
+HerokuAutomation_Playwright_Reqnroll/
+├── Artifacts/                  # Test execution artifacts
+│   ├── Logs/                   # Scenario execution logs
+│   ├── Screenshots/            # Failure screenshots
+│   ├── Traces/                 # Browser traces
+│   ├── Videos/                 # Test execution videos
+│   └── Reports/                # Allure reports
+├── Config/                     # Configuration files
+│   └── TestConfiguration.cs    # Test settings and paths
+├── Features/                   # Reqnroll feature files
+├── Hooks/                      # Test hooks and setup
+│   └── PlaywrightHooks.cs      # Browser and test lifecycle management
+├── Pages/                      # Page object models
+├── Steps/                      # Step definitions
+└── Utils/                      # Utility classes
+```
 
 ## Prerequisites
 
 - .NET 8.0 SDK
-- Visual Studio 2022 or later (recommended)
-- PowerShell 7.0 or later
+- Node.js (for Playwright installation)
+- Git
 
-## Getting Started
+## Setup
 
 1. Clone the repository:
    ```bash
-   git clone [your-repository-url]
+   git clone https://github.com/yourusername/HerokuAutomation_Playwright_Reqnroll.git
+   cd HerokuAutomation_Playwright_Reqnroll
    ```
 
 2. Install dependencies:
    ```bash
    dotnet restore
+   dotnet build
    ```
 
 3. Install Playwright browsers:
    ```bash
-   pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
+   npx playwright install
    ```
-
-## Project Structure
-
-- `Pages/`: Page Object Models
-- `Steps/`: Step definitions for test scenarios
-- `Features/`: Test scenarios in Gherkin syntax
-- `TestData/`: Test data files
-- `Hooks/`: Test setup and teardown logic
 
 ## Running Tests
 
-### Via Command Line
+### Local Execution
 
+Run all tests:
 ```bash
 dotnet test
 ```
 
-### Via Visual Studio
+Run specific feature:
+```bash
+dotnet test --filter "FullyQualifiedName~YourFeatureName"
+```
 
-1. Open the solution in Visual Studio
-2. Open Test Explorer
-3. Run desired tests
+### Viewing Reports
 
-## Test Artifacts
+1. Generate Allure report:
+   ```bash
+   allure serve bin/Debug/net8.0/allure-results
+   ```
 
-The following artifacts are generated during test execution:
+2. View traces:
+   ```bash
+   npx playwright show-trace Artifacts/Traces/trace_your_scenario.zip
+   ```
 
-- Screenshots: Captured on test failure
-- Videos: Recorded for failed test scenarios
-- Logs: Detailed test execution logs
+## Artifacts
+
+The test execution generates several types of artifacts:
+
+- **Logs**: Detailed execution logs for each scenario
+- **Screenshots**: Automatic screenshots on test failure
+- **Videos**: Recordings of test execution
+- **Traces**: Browser traces for debugging
+- **Allure Reports**: Comprehensive test execution reports
+
+All artifacts are stored in the `Artifacts` directory at the project root.
 
 ## CI/CD
 
-The project uses GitHub Actions for continuous integration. The workflow:
-
-1. Builds the project
-2. Runs all tests
-3. Captures test results and artifacts
-4. Uploads results to GitHub Actions
+The project includes a GitHub Actions workflow that:
+- Runs on pull requests and pushes to main
+- Installs dependencies
+- Runs tests
+- Generates and publishes Allure reports
+- Handles artifacts
 
 ## Contributing
 
@@ -83,4 +122,4 @@ The project uses GitHub Actions for continuous integration. The workflow:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details 
+This project is licensed under the MIT License - see the LICENSE file for details. 

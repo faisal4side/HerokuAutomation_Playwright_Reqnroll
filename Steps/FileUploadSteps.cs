@@ -4,6 +4,7 @@ using Reqnroll;
 using System.Threading.Tasks;
 using HerokuAutomation_Playwright_Reqnroll.Pages;
 using System.IO;
+using HerokuAutomation_Playwright_Reqnroll.Config;
 
 namespace HerokuAutomation_Playwright_Reqnroll.Steps
 {
@@ -30,9 +31,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         [When(@"I upload the file ""(.*)""")]
         public async Task WhenIUploadTheFile(string fileName)
         {
-            // Get the path to the test file in the bin directory
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var filePath = Path.Combine(basePath, "TestData", fileName);
+            var filePath = Path.Combine(TestConfiguration.TestDataDirectory, fileName);
             
             if (!File.Exists(filePath))
             {
