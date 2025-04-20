@@ -3,8 +3,10 @@ Feature: File Upload Automation
     I want to upload files
     So that I can verify the upload functionality
 
-    Scenario: Upload file and verify
+    Background:
         Given I am on the file upload page
+
+    Scenario: Upload file and verify
         When I upload the file "test.txt"
         Then I should see the uploaded file name "test.txt"
         And I should see the upload success message 

@@ -6,6 +6,22 @@ namespace HerokuAutomation_Playwright_Reqnroll.Pages
     {
         public JavaScriptAlertsPage(IPage page) : base(page)
         {
+            // Set up dialog handlers once when the page is created
+            Page.Dialog += async (_, dialog) =>
+            {
+                switch (dialog.Type)
+                {
+                    case "alert":
+                        await dialog.AcceptAsync();
+                        break;
+                    case "confirm":
+                        await dialog.AcceptAsync();
+                        break;
+                    case "prompt":
+                        await dialog.AcceptAsync("Test Message");
+                        break;
+                }
+            };
         }
 
         public ILocator JsAlertButton => Page.GetByRole(AriaRole.Button, new() { Name = "Click for JS Alert" });
@@ -15,28 +31,16 @@ namespace HerokuAutomation_Playwright_Reqnroll.Pages
 
         public async Task ClickJsAlertButton()
         {
-            Page.Dialog += async (_, dialog) =>
-            {
-                await dialog.AcceptAsync();
-            };
             await JsAlertButton.ClickAsync();
         }
 
         public async Task ClickJsConfirmButton()
         {
-            Page.Dialog += async (_, dialog) =>
-            {
-                await dialog.AcceptAsync();
-            };
             await JsConfirmButton.ClickAsync();
         }
 
         public async Task ClickJsPromptButton(string inputText)
         {
-            Page.Dialog += async (_, dialog) =>
-            {
-                await dialog.AcceptAsync(inputText);
-            };
             await JsPromptButton.ClickAsync();
         }
 

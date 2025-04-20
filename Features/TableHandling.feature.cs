@@ -83,15 +83,24 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
+        public virtual async System.Threading.Tasks.Task FeatureBackgroundAsync()
+        {
+#line 6
+#line hidden
+#line 7
+ await testRunner.GivenAsync("I am on the tables page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Extract and verify company names from table")]
-        public async System.Threading.Tasks.Task ExtractAndVerifyCompanyNamesFromTable()
+        [NUnit.Framework.DescriptionAttribute("Extract and print company names")]
+        public async System.Threading.Tasks.Task ExtractAndPrintCompanyNames()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Extract and verify company names from table", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
-    this.ScenarioInitialize(scenarioInfo);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Extract and print company names", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 9
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -100,31 +109,28 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
-        await testRunner.GivenAsync("I am on the tables page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 8
-        await testRunner.WhenAsync("I extract all company names from the table", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 9
-        await testRunner.ThenAsync("I should see the company names printed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 6
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 10
-        await testRunner.AndAsync("I should verify that \"Jason Doe\" exists in the table", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+ await testRunner.WhenAsync("I extract all names from the table", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 11
+ await testRunner.ThenAsync("I should see all names printed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Extract data from any table")]
-        public async System.Threading.Tasks.Task ExtractDataFromAnyTable()
+        [NUnit.Framework.DescriptionAttribute("Verify specific name exists")]
+        public async System.Threading.Tasks.Task VerifySpecificNameExists()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Extract data from any table", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 12
-    this.ScenarioInitialize(scenarioInfo);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Verify specific name exists", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 13
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -133,14 +139,59 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 13
-        await testRunner.GivenAsync("I am on the tables page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 6
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 14
-        await testRunner.WhenAsync("I extract data from the table with headers", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I extract data from the table", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 15
-        await testRunner.ThenAsync("I should see the table data printed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("I should verify that \"Jason Doe\" exists in the table", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Extract and verify all table data")]
+        public async System.Threading.Tasks.Task ExtractAndVerifyAllTableData()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Extract and verify all table data", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 17
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 6
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 18
+ await testRunner.WhenAsync("I extract data from the table", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 19
+ await testRunner.ThenAsync("I should see the complete table data printed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Last Name",
+                            "First Name",
+                            "Email",
+                            "Due",
+                            "Web Site"});
+                table1.AddRow(new string[] {
+                            "Doe",
+                            "Jason",
+                            "jdoe@hotmail.com",
+                            "$100.00",
+                            "http://www.jdoe.com"});
+#line 20
+ await testRunner.AndAsync("I should verify the following data exists in the table", ((string)(null)), table1, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

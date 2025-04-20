@@ -83,6 +83,15 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
+        public virtual async System.Threading.Tasks.Task FeatureBackgroundAsync()
+        {
+#line 6
+    #line hidden
+#line 7
+        await testRunner.GivenAsync("I am on the file upload page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Upload file and verify")]
         public async System.Threading.Tasks.Task UploadFileAndVerify()
@@ -90,7 +99,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Upload file and verify", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+#line 9
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -100,16 +109,16 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
-        await testRunner.GivenAsync("I am on the file upload page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 8
-        await testRunner.WhenAsync("I upload the file \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 9
-        await testRunner.ThenAsync("I should see the uploaded file name \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 6
+    await this.FeatureBackgroundAsync();
 #line hidden
 #line 10
+        await testRunner.WhenAsync("I upload the file \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 11
+        await testRunner.ThenAsync("I should see the uploaded file name \"test.txt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 12
         await testRunner.AndAsync("I should see the upload success message", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }

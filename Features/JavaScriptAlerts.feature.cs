@@ -83,6 +83,15 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
+        public virtual async System.Threading.Tasks.Task FeatureBackgroundAsync()
+        {
+#line 6
+    #line hidden
+#line 7
+        await testRunner.GivenAsync("I am on the JavaScript alerts page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Handle JS Alert")]
         public async System.Threading.Tasks.Task HandleJSAlert()
@@ -90,7 +99,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle JS Alert", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+#line 9
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -100,16 +109,16 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
-        await testRunner.GivenAsync("I am on the JavaScript alerts page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 8
-        await testRunner.WhenAsync("I click on the JS Alert button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 9
-        await testRunner.ThenAsync("I should see the alert message \"I am a JS Alert\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 6
+    await this.FeatureBackgroundAsync();
 #line hidden
 #line 10
+        await testRunner.WhenAsync("I click on the JS Alert button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 11
+        await testRunner.ThenAsync("I should see the alert message \"You successfully clicked an alert\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 12
         await testRunner.AndAsync("I should accept the alert", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -123,7 +132,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle JS Confirm", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 12
+#line 14
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -133,16 +142,16 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 13
-        await testRunner.GivenAsync("I am on the JavaScript alerts page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 14
-        await testRunner.WhenAsync("I click on the JS Confirm button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 6
+    await this.FeatureBackgroundAsync();
 #line hidden
 #line 15
-        await testRunner.ThenAsync("I should see the alert message \"I am a JS Confirm\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+        await testRunner.WhenAsync("I click on the JS Confirm button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 16
+        await testRunner.ThenAsync("I should see the alert message \"You clicked: Ok\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 17
         await testRunner.AndAsync("I should accept the confirm", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -156,7 +165,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Handle JS Prompt", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 18
+#line 19
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -166,23 +175,20 @@ namespace HerokuAutomation_Playwright_Reqnroll.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 19
-        await testRunner.GivenAsync("I am on the JavaScript alerts page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 6
+    await this.FeatureBackgroundAsync();
 #line hidden
 #line 20
         await testRunner.WhenAsync("I click on the JS Prompt button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 21
-        await testRunner.AndAsync("I enter \"Test Message\" in the prompt", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+        await testRunner.ThenAsync("I should see the alert message \"Test Message\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 22
-        await testRunner.ThenAsync("I should see the alert message \"I am a JS prompt\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 23
         await testRunner.AndAsync("I should accept the prompt", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 24
-        await testRunner.AndAsync("I should see the result containing \"Test Message\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 23
+        await testRunner.AndAsync("I should see the result containing \"You entered: Test Message\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

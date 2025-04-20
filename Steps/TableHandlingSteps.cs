@@ -28,50 +28,60 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
             await _page.GotoAsync("https://the-internet.herokuapp.com/tables");
         }
 
-        [When(@"I extract all company names from the table")]
-        public async Task WhenIExtractAllCompanyNamesFromTheTable()
+        [When(@"I extract all names from the table")]
+        public async Task WhenIExtractAllNamesFromTheTable()
         {
-            var companyNames = await _tablePage.GetCompanyNames();
-            _scenarioContext.Set(companyNames.ToList(), "CompanyNames");
+            var names = await _tablePage.GetAllNames();
+            _scenarioContext.Set(names, "Names");
         }
 
-        [When(@"I extract data from the table with headers")]
-        public async Task WhenIExtractDataFromTheTableWithHeaders()
+        [When(@"I extract data from the table")]
+        public async Task WhenIExtractDataFromTheTable()
         {
             var tableData = await _tablePage.GetTableData();
             _scenarioContext.Set(tableData, "TableData");
         }
 
-        [Then(@"I should see the company names printed")]
-        public void ThenIShouldSeeTheCompanyNamesPrinted()
+        [Then(@"I should see all names printed")]
+        public void ThenIShouldSeeAllNamesPrinted()
         {
-            var companyNames = _scenarioContext.Get<List<string>>("CompanyNames");
-            foreach (var name in companyNames)
+            var names = _scenarioContext.Get<List<string>>("Names");
+            TestContext.WriteLine("All names in the table:");
+            foreach (var name in names)
             {
-                TestContext.WriteLine($"Company Name: {name}");
+                TestContext.WriteLine($"  {name}");
             }
         }
 
         [Then(@"I should verify that ""(.*)"" exists in the table")]
-        public async Task ThenIShouldVerifyThatExistsInTheTable(string name)
+        public async Task ThenIShouldVerifyThatExistsInTheTable(string fullName)
         {
-            var nameExists = await _tablePage.IsNamePresentInTable(name);
-            Assert.That(nameExists, Is.True, $"Expected to find '{name}' in the table");
+            var exists = await _tablePage.IsNamePresentInTable(fullName);
+            Assert.That(exists, Is.True, $"Expected to find '{fullName}' in the table");
         }
 
-        [Then(@"I should see the table data printed")]
-        public void ThenIShouldSeeTheTableDataPrinted()
+        [Then(@"I should see the complete table data printed")]
+        public void ThenIShouldSeeTheCompleteTableDataPrinted()
         {
             var tableData = _scenarioContext.Get<List<Dictionary<string, string>>>("TableData");
+            TestContext.WriteLine("Complete table data:");
             foreach (var row in tableData)
             {
-                TestContext.WriteLine("Row Data:");
+                TestContext.WriteLine("Row:");
                 foreach (var kvp in row)
                 {
                     TestContext.WriteLine($"  {kvp.Key}: {kvp.Value}");
                 }
                 TestContext.WriteLine("");
             }
+        }
+
+        [Then(@"I should verify the following data exists in the table")]
+        public async Task ThenIShouldVerifyTheFollowingDataExistsInTheTable(Table table)
+        {
+            var expectedData = table.Rows[0].ToDictionary(x => x.Key, x => x.Value);
+            var exists = await _tablePage.VerifyRowData(expectedData);
+            Assert.That(exists, Is.True, "Expected row data was not found in the table");
         }
     }
 } 

@@ -8,7 +8,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Pages
         {
         }
 
-        public ILocator ChooseFileButton => Page.GetByLabel("Choose File");
+        public ILocator ChooseFileButton => Page.Locator("#file-upload");
         public ILocator UploadButton => Page.GetByRole(AriaRole.Button, new() { Name = "Upload" });
         public ILocator UploadedFiles => Page.Locator("#uploaded-files");
         public ILocator SuccessMessage => Page.Locator("h3");

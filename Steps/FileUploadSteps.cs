@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Reqnroll;
 using System.Threading.Tasks;
 using HerokuAutomation_Playwright_Reqnroll.Pages;
+using System.IO;
 
 namespace HerokuAutomation_Playwright_Reqnroll.Steps
 {
@@ -16,7 +17,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         public FileUploadSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            _page = scenarioContext.Get<IPage>();
+            _page = scenarioContext.Get<IPage>("page");
             _fileUploadPage = new FileUploadPage(_page);
         }
 
@@ -29,7 +30,15 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         [When(@"I upload the file ""(.*)""")]
         public async Task WhenIUploadTheFile(string fileName)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", fileName);
+            // Get the path to the test file in the bin directory
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var filePath = Path.Combine(basePath, "TestData", fileName);
+            
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException($"Test file not found at: {filePath}");
+            }
+
             await _fileUploadPage.UploadFile(filePath);
         }
 
@@ -37,7 +46,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         public async Task ThenIShouldSeeTheUploadedFileName(string fileName)
         {
             var uploadedFileName = await _fileUploadPage.GetUploadedFileName();
-            Assert.That(uploadedFileName, Is.EqualTo(fileName));
+            Assert.That(uploadedFileName.Trim(), Is.EqualTo(fileName));
         }
 
         [Then(@"I should see the upload success message")]
