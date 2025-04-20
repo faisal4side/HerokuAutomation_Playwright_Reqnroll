@@ -93,32 +93,70 @@ namespace HerokuAutomation_Playwright_Reqnroll.Hooks
     [SetUpFixture]
     public class GlobalHooks
     {
-        [OneTimeSetUp]
-        public void BeforeAllTests()
-        {
-            try
-            {
-                // Ensure all artifact directories exist
-                Directory.CreateDirectory(TestConfiguration.ScreenshotsDirectory);
-                Directory.CreateDirectory(TestConfiguration.VideoDirectory);
-                Directory.CreateDirectory(TestConfiguration.LogsDirectory);
+        private IPlaywright _playwright;
+        private IBrowser _browser;
+        private IBrowserContext _context;
+        private IPage _page;
 
-                TestLogger.LogInfo($"Screenshots directory: {Path.GetFullPath(TestConfiguration.ScreenshotsDirectory)}");
-                TestLogger.LogInfo($"Videos directory: {Path.GetFullPath(TestConfiguration.VideoDirectory)}");
-                TestLogger.LogInfo($"Logs directory: {Path.GetFullPath(TestConfiguration.LogsDirectory)}");
-                TestLogger.LogInfo("Test run started - Directories created and verified");
-            }
-            catch (Exception ex)
+        [OneTimeSetUp]
+        public async Task Setup()
+        {
+            _playwright = await Playwright.CreateAsync();
+            _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                TestLogger.LogError("Failed to create artifact directories", ex);
-                throw;
-            }
+                Headless = false
+            });
+            _context = await _browser.NewContextAsync();
+            _page = await _context.NewPageAsync();
+
+            // Store the page in ScenarioContext with the correct key
+            ScenarioContext.Current.Set(_page, "page");
         }
 
         [OneTimeTearDown]
-        public void AfterAllTests()
+        public async Task Teardown()
         {
-            TestLogger.LogInfo("Test run completed");
+            if (_page != null)
+            {
+                await _page.CloseAsync();
+            }
+            if (_context != null)
+            {
+                await _context.CloseAsync();
+            }
+            if (_browser != null)
+            {
+                await _browser.CloseAsync();
+            }
+            if (_playwright != null)
+            {
+                _playwright.Dispose();
+            }
+        }
+    }
+
+    public class PlaywrightFixture
+    {
+        protected IPage Page { get; private set; }
+
+        [SetUp]
+        public void Setup()
+        {
+            Page = ScenarioContext.Current.Get<IPage>("page");
+        }
+
+        [TearDown]
+        public async Task TearDown()
+        {
+            if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
+            {
+                var screenshotPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "screenshots");
+                Directory.CreateDirectory(screenshotPath);
+                var fileName = $"{TestContext.CurrentContext.Test.Name}_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                var fullPath = Path.Combine(screenshotPath, fileName);
+                await Page.ScreenshotAsync(new PageScreenshotOptions { Path = fullPath });
+                TestContext.AddTestAttachment(fullPath);
+            }
         }
     }
 } 

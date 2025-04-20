@@ -14,14 +14,14 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
     [Binding]
     public class LoginSteps
     {
-        private readonly ScenarioContext _scenarioContext;
         private readonly IPage _page;
-        private readonly LoginPage _loginPage;
+        private readonly ScenarioContext _scenarioContext;
+        private LoginPage _loginPage;
 
         public LoginSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            _page = _scenarioContext.Get<IPage>("page");
+            _page = scenarioContext.Get<IPage>("page");
             _loginPage = new LoginPage(_page);
         }
 

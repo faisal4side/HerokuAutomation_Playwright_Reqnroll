@@ -18,7 +18,6 @@ Feature: JavaScript Alerts Automation
     Scenario: Handle JS Prompt
         Given I am on the JavaScript alerts page
         When I click on the JS Prompt button
-        And I enter "Test Message" in the prompt
         Then I should see the alert message "I am a JS prompt"
         And I should accept the prompt
         And I should see the result containing "Test Message" 
