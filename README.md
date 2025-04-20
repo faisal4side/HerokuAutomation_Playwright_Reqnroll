@@ -1,115 +1,86 @@
-# Heroku Automation with Playwright and Reqnroll
+# Playwright Test Automation with NUnit
 
-This project demonstrates automated testing of the Heroku test application using Playwright and Reqnroll.
+This project demonstrates automated testing of web applications using Playwright with NUnit in C#. It includes examples of table handling, data verification, and other common web testing scenarios.
+
+## Features
+
+- Table data extraction and verification
+- Comprehensive test scenarios using NUnit
+- Page Object Model implementation
+- Screenshot and video capture on test failure
+- Detailed logging
+- GitHub Actions CI/CD integration
 
 ## Prerequisites
 
 - .NET 8.0 SDK
-- Visual Studio 2022 or Visual Studio Code
-- Node.js (for Playwright installation)
+- Visual Studio 2022 or later (recommended)
+- PowerShell 7.0 or later
 
-## Setup Instructions
+## Getting Started
 
-1. Clone the repository
-2. Install Playwright browsers:
+1. Clone the repository:
    ```bash
-   dotnet build
-   dotnet tool install --global Microsoft.Playwright.CLI
-   playwright install
+   git clone [your-repository-url]
    ```
-3. Restore NuGet packages:
+
+2. Install dependencies:
    ```bash
    dotnet restore
    ```
 
+3. Install Playwright browsers:
+   ```bash
+   pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
+   ```
+
 ## Project Structure
 
-- `Pages/` - Contains page object models
-- `Features/` - Contains Reqnroll feature files
-- `Steps/` - Contains step definitions
-- `Utilities/` - Contains helper classes
-- `Config/` - Contains configuration settings
-- `videos/` - Contains test execution recordings
-- `screenshots/` - Contains failure screenshots
-- `logs/` - Contains test execution logs and stack traces
+- `Pages/`: Page Object Models
+- `Steps/`: Step definitions for test scenarios
+- `Features/`: Test scenarios in Gherkin syntax
+- `TestData/`: Test data files
+- `Hooks/`: Test setup and teardown logic
 
 ## Running Tests
 
-To run all tests:
+### Via Command Line
+
 ```bash
 dotnet test
 ```
 
-To run specific feature:
-```bash
-dotnet test --filter "FullyQualifiedName~Login"
-```
+### Via Visual Studio
 
-## CI/CD Integration
+1. Open the solution in Visual Studio
+2. Open Test Explorer
+3. Run desired tests
 
-### GitHub Actions
+## Test Artifacts
 
-The project includes a GitHub Actions workflow (`.github/workflows/run-tests.yml`) that:
+The following artifacts are generated during test execution:
 
-1. **Build Process**:
-   - Sets up .NET 8.0
-   - Installs Playwright CLI
-   - Installs required browsers
-   - Restores NuGet packages
-   - Builds the solution
+- Screenshots: Captured on test failure
+- Videos: Recorded for failed test scenarios
+- Logs: Detailed test execution logs
 
-2. **Test Execution**:
-   - Runs all tests
-   - Collects code coverage
-   - Generates test reports
+## CI/CD
 
-3. **Artifact Collection**:
-   - Screenshots from failed tests
-   - Video recordings of test execution
-   - Detailed test logs
-   - Test results and coverage reports
+The project uses GitHub Actions for continuous integration. The workflow:
 
-### Pipeline Setup
+1. Builds the project
+2. Runs all tests
+3. Captures test results and artifacts
+4. Uploads results to GitHub Actions
 
-1. **Enable GitHub Actions**:
-   - Push the repository to GitHub
-   - GitHub Actions will automatically detect the workflow file
-   - The workflow will run on every push to main and pull requests
+## Contributing
 
-2. **View Results**:
-   - Go to the "Actions" tab in your GitHub repository
-   - Click on a workflow run to see the results
-   - Download artifacts from the workflow run page
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-### Artifact Access
+## License
 
-After workflow execution, artifacts can be accessed from:
-- GitHub Actions workflow run page
-- Artifacts section of the workflow run
-- Download links for:
-  - Screenshots
-  - Videos
-  - Logs
-  - Test results
-  - Coverage reports
-
-## Test Scenarios
-
-1. Login Automation
-   - Valid credentials login
-   - Invalid credentials login with screenshot capture
-
-2. Dynamic Table Handling (To be implemented)
-3. JavaScript Alerts (To be implemented)
-4. File Upload (To be implemented)
-
-## Best Practices Implemented
-
-- Page Object Model (POM)
-- Explicit waits
-- Screenshot capture on failure
-- Video recording of test execution
-- Detailed logging with stack traces
-- Clean separation of concerns
-- Reusable components
-- Proper exception handling 
+This project is licensed under the MIT License - see the LICENSE file for details 

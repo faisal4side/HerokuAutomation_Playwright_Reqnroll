@@ -361,3 +361,39 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Test Artifacts
+Screenshots/
+Videos/
+Logs/
+TestResults/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.vs/
+*.vssscc
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.sdf
+*.opensdf
+*.sln.docstates
+*.cache
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# IDE
+.vs/
+.idea/
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
