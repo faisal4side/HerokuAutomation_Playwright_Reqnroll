@@ -42,7 +42,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         public async Task ThenIShouldBeLoggedInSuccessfully()
         {
             var isLoggedIn = await _loginPage.IsLoginSuccessfulAsync();
-            Assert.IsTrue(isLoggedIn, "Login was not successful");
+            Assert.That(isLoggedIn, Is.True, "Login was not successful");
         }
 
         [Then(@"I should see an error message")]
@@ -55,7 +55,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
             bool isValidError = flashMessage.Contains("Your username is invalid!") || 
                               flashMessage.Contains("Your password is invalid!");
             
-            Assert.IsTrue(isValidError, $"Expected error message not found. Actual message: {flashMessage}");
+            Assert.That(isValidError, Is.True, $"Expected error message not found. Actual message: {flashMessage}");
         }
 
         [Then(@"a screenshot should be captured")]
@@ -118,9 +118,9 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         public void ThenLogsShouldBeGenerated()
         {
             var logFile = TestLogger.GetCurrentLogFile();
-            Assert.IsTrue(File.Exists(logFile), $"Log file was not generated at {logFile}");
+            Assert.That(File.Exists(logFile), Is.True, $"Log file was not generated at {logFile}");
             var logContent = File.ReadAllText(logFile);
-            Assert.IsTrue(logContent.Contains(_scenarioContext.ScenarioInfo.Title), "Scenario title not found in logs");
+            Assert.That(logContent.Contains(_scenarioContext.ScenarioInfo.Title), Is.True, "Scenario title not found in logs");
             TestLogger.LogInfo($"Logs generated at: {logFile}");
         }
 
@@ -129,7 +129,7 @@ namespace HerokuAutomation_Playwright_Reqnroll.Steps
         {
             var logFile = TestLogger.GetCurrentLogFile();
             var logContent = File.ReadAllText(logFile);
-            Assert.IsTrue(logContent.Contains("Stack Trace:"), "Stack trace was not captured in logs");
+            Assert.That(logContent.Contains("Stack Trace:"), Is.True, "Stack trace was not captured in logs");
             TestLogger.LogInfo("Stack trace was captured in logs");
         }
     }

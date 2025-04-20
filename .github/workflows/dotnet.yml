@@ -30,10 +30,8 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
       
-    - name: Install Playwright
-      run: |
-        dotnet build -t:RestorePlaywright
-        pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
+    - name: Install Playwright Browsers
+      run: pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
       
     - name: Run tests
       run: dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=TestResults.trx" --settings:test.runsettings
