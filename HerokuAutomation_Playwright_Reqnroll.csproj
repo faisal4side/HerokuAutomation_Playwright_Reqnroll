@@ -37,6 +37,9 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -59,11 +62,22 @@
   </ItemGroup>
 
   <Target Name="CreateArtifactsDirectories" BeforeTargets="Build">
-    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Screenshots" />
-    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Videos" />
-    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Logs" />
-    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\TestData" />
-    <MakeDir Directories="$(MSBuildProjectDirectory)\Artifacts\Reports" />
+    <PropertyGroup>
+      <ArtifactsBasePath>$(MSBuildProjectDirectory)\Artifacts</ArtifactsBasePath>
+      <TestDataPath>$(MSBuildProjectDirectory)\TestData</TestDataPath>
+    </PropertyGroup>
+    
+    <MakeDir Directories="$(ArtifactsBasePath)\Screenshots" />
+    <MakeDir Directories="$(ArtifactsBasePath)\Videos" />
+    <MakeDir Directories="$(ArtifactsBasePath)\Logs" />
+    <MakeDir Directories="$(ArtifactsBasePath)\Reports" />
+    <MakeDir Directories="$(ArtifactsBasePath)\TestData" />
+    <MakeDir Directories="$(TestDataPath)" Condition="!Exists('$(TestDataPath)')" />
+    
+    <!-- Copy TestData to Artifacts if it doesn't exist -->
+    <Copy SourceFiles="@(TestDataFiles)" 
+          DestinationFolder="$(ArtifactsBasePath)\TestData\%(RecursiveDir)"
+          Condition="!Exists('$(ArtifactsBasePath)\TestData\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
 </Project>
