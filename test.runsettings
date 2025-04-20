@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <MaxCpuCount>1</MaxCpuCount>
+    <TestSessionTimeout>1800000</TestSessionTimeout>
+    <TreatNoTestsAsError>true</TreatNoTestsAsError>
+  </RunConfiguration>
+  <TestRunParameters>
+    <Parameter name="TracesDirectory" value="./Artifacts/Traces" />
+    <Parameter name="VideosDirectory" value="./Artifacts/Videos" />
+    <Parameter name="ScreenshotsDirectory" value="./Artifacts/Screenshots" />
+  </TestRunParameters>
+  <Playwright>
+    <BrowserName>chromium</BrowserName>
+    <LaunchOptions>
+      <Headless>true</Headless>
+      <Channel>chrome</Channel>
+    </LaunchOptions>
+    <ContextOptions>
+      <ViewportSize>
+        <Width>1920</Width>
+        <Height>1080</Height>
+      </ViewportSize>
+      <RecordVideoDir>./Artifacts/Videos</RecordVideoDir>
+      <RecordVideoSize>
+        <Width>1920</Width>
+        <Height>1080</Height>
+      </RecordVideoSize>
+    </ContextOptions>
+    <TracesDir>./Artifacts/Traces</TracesDir>
+  </Playwright>
+</RunSettings> 

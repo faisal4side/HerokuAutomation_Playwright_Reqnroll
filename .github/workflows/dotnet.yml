@@ -36,9 +36,12 @@ jobs:
         pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
       
     - name: Run tests
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=TestResults.trx" --settings:test.runsettings
       env:
         ALLURE_CONFIG_FILE: allureConfig.json
+        PWTEST_TRACE: on
+        PWTEST_VIDEO: on
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 0
         
     - name: Generate Allure Report
       if: always()
