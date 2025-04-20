@@ -1,39 +1,42 @@
-name: .NET
+name: Playwright Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: '8.0.x'
         
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
         
-    - name: Restore dependencies
+    - name: Install dependencies
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release --no-restore
       
     - name: Install Playwright
-      run: npx playwright install --with-deps chromium
+      run: |
+        dotnet build -t:RestorePlaywright
+        pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
       
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --configuration Release --no-build --verbosity normal
       env:
         ALLURE_CONFIG_FILE: allureConfig.json
         
@@ -41,7 +44,7 @@ jobs:
       if: always()
       run: |
         mkdir -p allure-results
-        dotnet test --no-build --verbosity normal --logger "trx;LogFileName=TestResults.trx" --results-directory allure-results
+        dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=TestResults.trx" --results-directory allure-results
         
     - name: Upload Allure Results
       if: always()
@@ -55,11 +58,18 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: test-artifacts
-        path: Artifacts/
+        path: |
+          Artifacts/Screenshots/**/*.png
+          Artifacts/Videos/**/*.webm
+          Artifacts/Traces/**/*.zip
+          Artifacts/Logs/**/*.log
+          Artifacts/Reports/**/*.html
         
     - name: Publish Test Results
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: test-results
-        path: TestResults.trx 
+        path: |
+          allure-results
+          TestResults.trx 
